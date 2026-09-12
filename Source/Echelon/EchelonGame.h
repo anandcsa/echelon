@@ -3,6 +3,7 @@
 #include "GameFramework/Pawn.h"
 #include "GameFramework/GameModeBase.h"
 #include "GameFramework/HUD.h"
+#include "GameFramework/PlayerController.h"
 #include "EchelonGame.generated.h"
 
 class UCapsuleComponent;
@@ -11,6 +12,17 @@ class UCameraComponent;
 class USpringArmComponent;
 class UStaticMeshComponent;
 class UPixelStreamingInput;
+
+UCLASS()
+class ECHELON_API AEchelonController : public APlayerController {
+ GENERATED_BODY()
+public:
+ AEchelonController();
+ virtual void BeginPlay() override;
+ UFUNCTION() void ForwardBrowserMessage(const FString& Descriptor);
+private:
+ UPROPERTY() UPixelStreamingInput* BrowserInput;
+};
 
 UCLASS()
 class ECHELON_API AEchelonWalker : public APawn {
@@ -75,6 +87,8 @@ public:
  FString Speech=TEXT("Mara: The city remembers the version of you it prefers. Find me by the avenue.");
  FString Connection=TEXT("LOCAL FALLBACK");
  bool Busy=false;
+ float ExternalForward=0, ExternalRight=0, ExternalUntil=0;
+ bool ExternalBrake=false;
  UPROPERTY() AEchelonCar* Car;
  UPROPERTY() AEchelonWalker* Walker;
  UPROPERTY() AEchelonMara* Mara;

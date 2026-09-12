@@ -14,6 +14,7 @@ https://echelon-breakpoint-50221095849.us-central1.run.app/asset-shortlist.html
 - A Mara character with local movement and bounded Gemini dialogue/intentions through the existing Node backend. E near Mara asks an authored question; the web bridge accepts typed questions.
 - Nine FBX models exported in Blender, attributed PBR source textures, and original character canon.
 - A Python content generator that imports the assets, creates PBR materials and builds the connected street map.
+- `Web/` contains a provider player with typed Mara chat, explicit touch controls, movement/look gestures, brake/interact and neutral-input release handling. It has not yet been tested against an Unreal stream.
 - Pixel Streaming enabled. Pixel Streaming 2 deliberately disabled because the provider requires exactly one plugin.
 - Windows pre-build content preparation, plus a GitHub Actions source-validation workflow.
 
