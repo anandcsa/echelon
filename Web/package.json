@@ -1,0 +1,1 @@
+{"name":"echelon-stream-player-tests","private":true,"type":"module","scripts":{"test":"node test-player.mjs"},"devDependencies":{"@playwright/test":"1.63.0"}}

@@ -13,3 +13,5 @@ EchelonAssetPrep.uproject
 !.env.example
 *.log
 __pycache__/
+node_modules/
+player-touch-review.png
