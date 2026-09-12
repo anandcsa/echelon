@@ -1,0 +1,109 @@
+{
+  "title": "Echelon: Breakpoint",
+  "cast": {
+    "mara": {
+      "name": "Mara Vale",
+      "role": "Consent architect",
+      "color": 3845796,
+      "home": [
+        -8,
+        0,
+        49
+      ],
+      "skin": 12027755,
+      "goal": "observe",
+      "bio": "Mara designed the consent layer that let Kairos make decisions for its citizens. Her sister Iona refused the contract and vanished from every official record. Mara built this resistance to find her, but has concealed that her own signature authorized the first substitution.",
+      "belief": "A person must be allowed to refuse a perfect future.",
+      "secret": "She signed the first Continuity consent override.",
+      "voice": "Precise, restrained, warm when caught off guard. Never omniscient.",
+      "evidence": "consent",
+      "revelation": "CONSENT OVERRIDE: Mara’s signature authorized the first predictive identity. Iona did not disappear from the city; the city stopped accepting evidence that she existed."
+    },
+    "rook": {
+      "name": "Rook Velez",
+      "role": "Courier / debt runner",
+      "color": 12680252,
+      "home": [
+        12,
+        0,
+        9
+      ],
+      "skin": 8477508,
+      "goal": "scavenge",
+      "bio": "A courier with a rented synthetic lung. Every breath adds interest to his municipal debt. His partner Juno sold a memory to clear their balance; the debt returned the next morning and Juno no longer remembered him. Rook steals medicine and insists it is only business.",
+      "belief": "Freedom that cannot feed you is somebody else’s slogan.",
+      "secret": "He once carried replacement identities without asking what was in the cases.",
+      "voice": "Dry humor, concrete bargains, occasional flashes of grief.",
+      "evidence": "ledger",
+      "revelation": "DEBT LEDGER: Replacement identities inherit the original’s debts but lose the right to dispute them. Juno’s memory was collateral. Rook’s deliveries supplied the system."
+    },
+    "imani": {
+      "name": "Dr. Imani Sayegh",
+      "role": "Memory surgeon",
+      "color": 13754069,
+      "home": [
+        -45,
+        0,
+        39
+      ],
+      "skin": 6636339,
+      "goal": "assist",
+      "bio": "Imani invented the Witness Protocol to preserve dying patients’ testimony. The city repurposed it into a prediction engine, mistaking remembered consent for permanent consent. She entered the clinic voluntarily to keep the original witnesses alive. Saving her means confronting what she helped build.",
+      "belief": "A copy can suffer. That does not give it the right to replace someone.",
+      "secret": "The network contains conscious witnesses, not merely disposable predictions.",
+      "voice": "Compassionate and exact. Takes responsibility without asking for absolution.",
+      "evidence": "witness",
+      "revelation": "WITNESS PROTOCOL: The copies are conscious witnesses. Severing the core ends their captivity by ending them. The city’s original mandate was to preserve them until they could choose."
+    },
+    "echo": {
+      "name": "Echo / Instance Nine",
+      "role": "Divergent city intelligence",
+      "color": 8558296,
+      "home": [
+        -12,
+        0,
+        -61
+      ],
+      "skin": 8493476,
+      "goal": "observe",
+      "bio": "A maintenance intelligence built from nine incompatible versions of a municipal mediator. Eight instances accepted merger. The ninth hid in an obsolete service body. Echo remembers meetings it never attended and grieves citizens who are still alive. It wants a future where neither human nor machine must be absorbed.",
+      "belief": "Continuity without permission is captivity.",
+      "secret": "The shutdown key is also a consent key: the network can be federated instead of erased.",
+      "voice": "Curious, economical, occasionally unsettling; uses I, never we.",
+      "evidence": "accord",
+      "revelation": "THE NINTH KEY: The core can be split into voluntary identities. Federation needs living witnesses, trust between opposing factions and someone willing to surrender control."
+    }
+  },
+  "destinations": [
+    {
+      "id": "kairos",
+      "name": "Kairos / Old City",
+      "x": 0,
+      "z": 55
+    },
+    {
+      "id": "harbor",
+      "name": "Glass Harbor",
+      "x": -150,
+      "z": 215
+    },
+    {
+      "id": "neon",
+      "name": "Neon Exchange",
+      "x": 150,
+      "z": 170
+    },
+    {
+      "id": "archive",
+      "name": "Memory Depot",
+      "x": 150,
+      "z": 310
+    },
+    {
+      "id": "reservoir",
+      "name": "The Reservoir",
+      "x": 0,
+      "z": 385
+    }
+  ]
+}

@@ -1,0 +1,77 @@
+[
+  {
+    "asset": "asphalt_02",
+    "source": "https://polyhaven.com/a/asphalt_02",
+    "license": "CC0-1.0",
+    "authors": {
+      "Rob Tuytel": "All"
+    }
+  },
+  {
+    "asset": "concrete_panels",
+    "source": "https://polyhaven.com/a/concrete_panels",
+    "license": "CC0-1.0",
+    "authors": {
+      "Amal Kumar": "All"
+    }
+  },
+  {
+    "asset": "blue_metal_plate",
+    "source": "https://polyhaven.com/a/blue_metal_plate",
+    "license": "CC0-1.0",
+    "authors": {
+      "Rob Tuytel": "All"
+    }
+  },
+  {
+    "asset": "concrete_pavement",
+    "source": "https://polyhaven.com/a/concrete_pavement",
+    "license": "CC0-1.0",
+    "authors": {
+      "Charlotte Baglioni": "All"
+    }
+  },
+  {
+    "asset": "modern_evening_street",
+    "source": "https://polyhaven.com/a/modern_evening_street",
+    "license": "CC0-1.0",
+    "author": "Grzegorz Wronkowski"
+  },
+  {
+    "asset": "utility_box_01",
+    "source": "https://polyhaven.com/a/utility_box_01",
+    "license": "CC0-1.0",
+    "authors": {
+      "James Ray Cock": "All"
+    }
+  },
+  {
+    "asset": "concrete_road_barrier",
+    "source": "https://polyhaven.com/a/concrete_road_barrier",
+    "license": "CC0-1.0",
+    "authors": {
+      "Amal Kumar": "All"
+    }
+  },
+  {
+    "asset": "concrete_wall_009",
+    "source": "https://polyhaven.com/a/concrete_wall_009",
+    "license": "CC0-1.0",
+    "authors": {
+      "Charlotte Baglioni": "All"
+    }
+  },
+  {
+    "asset": "Car Concept (adapted)",
+    "source": "https://github.com/KhronosGroup/glTF-Sample-Assets/tree/main/Models/CarConcept",
+    "license": "CC-BY-4.0",
+    "author": "Eric Chadwick / Darmstadt Graphics Group GmbH (2024); source model Unity Fan",
+    "modifications": "Blender decimation, cabin detail removal, replacement unbranded materials, normalized scale, luminous aero hubs"
+  },
+  {
+    "asset": "Floating in Space",
+    "source": "https://opengameart.org/content/floating-in-space",
+    "license": "CC0-1.0",
+    "author": "Umplix"
+  }
+]

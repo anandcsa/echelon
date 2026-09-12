@@ -1,0 +1,15 @@
+Binaries/
+DerivedDataCache/
+Intermediate/
+Saved/
+.vs/
+*.sln
+*.suo
+*.user
+Content/
+EchelonAssetPrep.uproject
+.env
+.env.*
+!.env.example
+*.log
+__pycache__/

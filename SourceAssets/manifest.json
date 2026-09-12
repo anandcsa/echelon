@@ -1,0 +1,65 @@
+[
+  {
+    "name": "sentinel-sedan",
+    "mesh_objects": 52,
+    "vertices": 30741,
+    "has_armature": false,
+    "fbx_bytes": 1864076
+  },
+  {
+    "name": "recon-drone",
+    "mesh_objects": 28,
+    "vertices": 9048,
+    "has_armature": false,
+    "fbx_bytes": 457372
+  },
+  {
+    "name": "pulse-carbine",
+    "mesh_objects": 22,
+    "vertices": 6616,
+    "has_armature": false,
+    "fbx_bytes": 217468
+  },
+  {
+    "name": "clinic-module",
+    "mesh_objects": 25,
+    "vertices": 6514,
+    "has_armature": false,
+    "fbx_bytes": 259692
+  },
+  {
+    "name": "transit-module",
+    "mesh_objects": 25,
+    "vertices": 6598,
+    "has_armature": false,
+    "fbx_bytes": 262140
+  },
+  {
+    "name": "npc-mara",
+    "mesh_objects": 35,
+    "vertices": 7547,
+    "has_armature": false,
+    "fbx_bytes": 367692
+  },
+  {
+    "name": "npc-rook",
+    "mesh_objects": 36,
+    "vertices": 7854,
+    "has_armature": false,
+    "fbx_bytes": 376556
+  },
+  {
+    "name": "npc-imani",
+    "mesh_objects": 37,
+    "vertices": 8102,
+    "has_armature": false,
+    "fbx_bytes": 387196
+  },
+  {
+    "name": "npc-echo",
+    "mesh_objects": 37,
+    "vertices": 8203,
+    "has_armature": false,
+    "fbx_bytes": 386140
+  }
+]
