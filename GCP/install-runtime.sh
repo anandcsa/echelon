@@ -8,10 +8,20 @@ PUBLIC_IP=${2:?public IPv4 required}
 [[ -f game.tar.gz && -f player.tar.gz ]] || { echo 'Missing packaged game/player archives.' >&2; exit 1; }
 [[ ! -d /opt/echelon ]] || { echo 'Runtime already exists; inspect before replacing it.' >&2; exit 1; }
 export DEBIAN_FRONTEND=noninteractive
-apt-get update
-apt-get install -y ca-certificates curl git xz-utils python3 caddy coturn \
+apt-get -o DPkg::Lock::Timeout=600 update
+# Official signed Ubuntu repository: https://caddyserver.com/docs/install
+apt-get -o DPkg::Lock::Timeout=600 install -y ca-certificates curl gnupg debian-keyring debian-archive-keyring apt-transport-https
+if [[ ! -f /etc/apt/sources.list.d/caddy-stable.list ]]; then
+ curl --fail --silent --show-error --location https://dl.cloudsmith.io/public/caddy/stable/gpg.key | gpg --batch --yes --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg
+ curl --fail --silent --show-error --location https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt -o /etc/apt/sources.list.d/caddy-stable.list
+ chmod 644 /usr/share/keyrings/caddy-stable-archive-keyring.gpg /etc/apt/sources.list.d/caddy-stable.list
+ apt-get -o DPkg::Lock::Timeout=600 update
+fi
+apt-get -o DPkg::Lock::Timeout=600 install -y ca-certificates curl git xz-utils python3 caddy coturn \
  nvidia-driver-570-server libnvidia-encode-570-server libvulkan1 vulkan-tools \
- libgbm1 libx11-6 libxcb1 libasound2
+ libgbm1 libx11-6 libxcb1 libasound2 libxkbcommon0 libnss3 \
+ libatk1.0-0 libatk-bridge2.0-0 libxcomposite1 libxdamage1 libxrandr2 \
+ libdrm2 libcups2 libpango-1.0-0 libcairo2
 # Node from the official distribution; verify its archive against official checksums.
 NODE_VERSION=22.22.0
 node_tmp=$(mktemp -d)
@@ -49,7 +59,7 @@ hashed = subprocess.check_output(['caddy', 'hash-password'], input=(password+'\n
 Path('/root/echelon-preview-login').write_text('Username: echelon\nPassword: '+password+'\n')
 Path('/root/echelon-preview-login').chmod(0o600)
 Path('/etc/caddy/Caddyfile').write_text(f'''{host} {{
- basicauth {{
+ basic_auth {{
   echelon {hashed}
  }}
  reverse_proxy 127.0.0.1:8080
@@ -113,6 +123,7 @@ StartLimitBurst=3
 [Service]
 User=echelon
 WorkingDirectory=/opt/echelon/game
+Environment=SDL_AUDIODRIVER=dummy
 ExecStart=/opt/echelon/game/Echelon.sh -RenderOffscreen -AudioMixer -Unattended -PixelStreamingURL=ws://127.0.0.1:8888 -PixelStreamingID=Echelon -ResX=1920 -ResY=1080 -ForceRes -PixelStreamingWebRTCMinPort=49152 -PixelStreamingWebRTCMaxPort=49251 -PixelStreamingWebRTCMaxFps=60 -stdout -FullStdOutLogOutput
 Restart=on-failure
 RestartSec=15

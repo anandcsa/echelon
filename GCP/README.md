@@ -1,13 +1,13 @@
 # Direct GCP Pixel Streaming
 
-Hosting choice: user's Google Cloud account; Epic's upstream streaming stack. This is a single-player preview deployment, not a multi-user game service. No resources have been provisioned by these scripts yet.
+Hosting choice: user's Google Cloud account; Epic's upstream streaming stack. This is a single-player preview deployment, not a multi-user game service. The dedicated `echelon-stream` L4 VM is provisioned. See `VALIDATION.md` for the current runtime verification status.
 
 ## Verified account preflight
 
 - Project: `gen-lang-client-0773193027`.
-- Proposed zone: `us-central1-a`.
+- Zone: `us-central1-a`.
 - `g2-standard-8`: 8 vCPUs, 32 GB RAM, one NVIDIA L4.
-- Regional L4 quota: 32, usage 0 at inspection. Quota does not guarantee physical capacity.
+- Regional L4 quota: 32 at preflight. Quota does not guarantee physical capacity.
 - Separate `echelon-stream` VPC/VM names; existing workloads are not modified.
 - Epic engine repository: invitation accepted; access active. UE 5.6.1 tag checked out locally at engine commit `6978b63c8951e57d97048d8424a0bebd637dde1d`.
 
@@ -24,21 +24,31 @@ npm ci --prefix GCP/player
 npm run build --prefix GCP/player
 ```
 
-The Linux helper validates the engine version, builds the editor and shader worker, runs the asset import commandlet, checks its fingerprint and invokes Unreal Automation Tool to compile/cook/package the game. This sequence is **not yet exercised with Unreal**. Asset/source contracts and JavaScript checks cannot substitute for native compilation.
+The Linux helper validates the engine version, builds the editor and shader worker, runs the asset import commandlet, checks its fingerprint and invokes Unreal Automation Tool to compile/cook/package the game. Editor compilation, asset import and editor game-mode startup have passed; standalone cooking/packaging remains pending. Asset/source contracts and JavaScript checks cannot substitute for native compilation.
 
 ## First GPU preview
 
-After successful packaging, pass the directory containing `Echelon.sh`:
+For an early native preview, the already compiled Unreal editor can run the game in `-game` mode. This is actual Unreal rendering, but is a larger deployment than a cooked game:
+
+```bash
+python3 Build/build_linux.py --engine-root /path/to/UnrealEngine --import-only
+python3 Build/stage_editor_preview.py --engine-root /path/to/UnrealEngine
+./GCP/provision.sh "$PWD/Artifacts/EditorPreview"
+```
+
+The staging helper includes the engine binaries, shader sources, program configurations, plugin runtime files and imported project. Keep `Artifacts/` private: it contains licensed Epic binaries. Do not run the staged copy while archiving it. First launch compiles a local shader cache and can take several minutes before streaming starts.
+
+Alternatively, after successful standalone packaging, pass the directory containing `Echelon.sh`:
 
 ```bash
 ./GCP/provision.sh "$PWD/Artifacts/Linux/Linux"
 ```
 
-The script refuses to allocate a VM without a game launcher/native binary directory and built player. It creates a dedicated network, IAP-only SSH ingress and one L4 VM, uploads only the packaged game/player, then installs the runtime. It does not copy Epic source, GitHub tokens or GCP service-account credentials.
+The script refuses to allocate a VM without a game launcher/native binary directory and built player. It creates a dedicated network, IAP-only SSH ingress and one L4 VM, uploads the staged game or editor preview plus player, then installs the runtime. It does not copy Epic C++ source, GitHub tokens or GCP service-account credentials.
 
-- Ubuntu 22.04, NVIDIA 570 server driver with NVENC/Vulkan libraries (UE 5.6.1 rejects older Linux drivers).
+- Ubuntu 22.04, NVIDIA 570-or-newer server driver with NVENC/Vulkan libraries (UE 5.6.1 rejects older Linux drivers).
 - UE 5.6 Epic infrastructure pinned to `771b83692a0bd464a6c3b80a0b207aafd7825162`.
-- HTTPS via Caddy, authenticated preview access, coturn relay.
+- HTTPS via Caddy from its official signed package repository, authenticated preview access, coturn relay. The headless SDL dummy audio device keeps the mixer running for Pixel Streaming.
 - Streamer/signalling ports 8888/8080 are not open in the cloud firewall. Public ports are HTTPS/ACME, authenticated TURN and restricted-range WebRTC media.
 - TURN and preview passwords are generated on the VM. Preview login: `/root/echelon-preview-login`, mode 0600. Do not paste it into GitHub or logs.
 - At most one player subscribes to the game. There is no session allocator or per-player isolation yet.
@@ -74,3 +84,17 @@ Official references:
 https://github.com/EpicGames/PixelStreamingInfrastructure
 https://docs.cloud.google.com/compute/docs/gpus
 https://docs.cloud.google.com/compute/docs/instances/limit-vm-runtime
+
+
+## Live video check
+
+Fetch the generated preview login over IAP into a private local file, then run:
+
+```bash
+cd GCP/player
+ECHELON_PREVIEW_URL=https://your-preview-host \
+ECHELON_PREVIEW_LOGIN=/absolute/path/to/private-login-file \
+node test-live-stream.mjs
+```
+
+This waits for decoded WebRTC video, records codec/resolution/frame statistics and audio energy, exercises entering/driving/braking, and captures screenshots. Inspect those screenshots to confirm the expected scene and movement. `ECHELON_TOUCH=1` checks touch controls; `ECHELON_RELAY=1` forces TURN. Increase `ECHELON_STREAM_TIMEOUT_MS` during first shader initialization. Do not treat the waiting page as proof that Unreal is streaming.

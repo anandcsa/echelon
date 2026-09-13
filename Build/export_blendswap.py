@@ -112,6 +112,9 @@ for recipe in recipes:
     for poly,index in zip(obj.data.polygons,faces):poly.material_index=index
     # Shared materials reduce draw calls without changing face assignment.
     tri_count=sum(len(p.vertices)-2 for p in obj.data.polygons)
+    # Unreal discards loose vertices; validate bounds of rendered faces.
+    surface=[obj.data.vertices[i].co for i in {i for p in obj.data.polygons for i in p.vertices}]
+    surface_dimensions=[max(v[i] for v in surface)-min(v[i] for v in surface) for i in range(3)]
     fbx=out/(recipe['name']+'.fbx')
     bpy.ops.export_scene.fbx(filepath=str(fbx),use_selection=True,object_types={'MESH'},axis_forward='-X',axis_up='Z',add_leaf_bones=False,bake_anim=False,path_mode='COPY',embed_textures=True)
     # Review scenes contain only the selected model and its new materials, not source HDRIs/scripts.
@@ -131,6 +134,6 @@ for recipe in recipes:
     if recipe['id'] in {8745,21029}:
         license.update(name='Creative Commons Attribution 3.0',url='https://creativecommons.org/licenses/by/3.0/',license_source='bundled_original_license')
     attribution='DennisH2010 (3DHaupt); vehicle concept by Piotr Kupsc' if recipe['id']==8745 else metadata['author']['username']
-    manifest.append(dict(attribution=attribution,name=recipe['name'],source_id=recipe['id'],source_url=metadata['url'],author=metadata['author'],license=license,source_downloads=metadata['counts']['downloads'],triangles=tri_count,dimensions_m=list(size*factor),materials=materials,fbx_bytes=fbx.stat().st_size,changes='Selected geometry, applied modifiers, normalized scale/origin, rebuilt portable PBR materials. Scene backgrounds and reference images omitted.'))
+    manifest.append(dict(attribution=attribution,name=recipe['name'],source_id=recipe['id'],source_url=metadata['url'],author=metadata['author'],license=license,source_downloads=metadata['counts']['downloads'],triangles=tri_count,dimensions_m=list(size*factor),surface_dimensions_m=surface_dimensions,materials=materials,fbx_bytes=fbx.stat().st_size,changes='Selected geometry, applied modifiers, normalized scale/origin, rebuilt portable PBR materials. Scene backgrounds and reference images omitted.'))
     print('EXPORTED',recipe['name'],tri_count,'triangles',flush=True)
 (out/'manifest.json').write_text(json.dumps(manifest,indent=2))

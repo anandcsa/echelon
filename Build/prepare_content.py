@@ -98,7 +98,12 @@ def add_facade_windows(m):
     custom = material_api.create_material_expression(m, u.MaterialExpressionCustom)
     custom.set_editor_property('description', 'Seeded Kairos facade windows')
     custom.set_editor_property('output_type', u.CustomMaterialOutputType.CMOT_FLOAT4)
-    custom.set_editor_property('inputs', [u.CustomInput(input_name='P'), u.CustomInput(input_name='N')])
+    inputs = []
+    for name in ['P', 'N']:
+        input_pin = u.CustomInput()
+        input_pin.set_editor_property('input_name', name)
+        inputs.append(input_pin)
+    custom.set_editor_property('inputs', inputs)
     custom.set_editor_property('code', """
 float2 uv = float2(abs(N.x) > 0.5 ? P.y : P.x, P.z) / float2(280.0, 360.0);
 float2 cell = frac(uv);
@@ -178,7 +183,7 @@ for entry in blend_manifest:
     # Catch incorrect FBX units before baking a city full of misplaced models.
     extent = mesh.get_bounds().box_extent
     actual = sorted([extent.x * .02, extent.y * .02, extent.z * .02])
-    expected = sorted(entry['dimensions_m'])
+    expected = sorted(entry.get('surface_dimensions_m', entry['dimensions_m']))
     if any(abs(a-b) > max(.05, b * .03) for a,b in zip(actual, expected)):
         raise RuntimeError(f'Incorrect imported scale for {entry["name"]}: {actual} versus {expected}')
     u.EditorAssetLibrary.save_loaded_asset(mesh)

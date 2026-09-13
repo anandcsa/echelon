@@ -63,7 +63,12 @@
       }
     ],
     "fbx_bytes": 3909292,
-    "changes": "Selected geometry, applied modifiers, normalized scale/origin, rebuilt portable PBR materials. Scene backgrounds and reference images omitted."
+    "changes": "Selected geometry, applied modifiers, normalized scale/origin, rebuilt portable PBR materials. Scene backgrounds and reference images omitted.",
+    "surface_dimensions_m": [
+      4.599999904632568,
+      2.4106669425964355,
+      1.4689306020736694
+    ]
   },
   {
     "attribution": "CFilip",
@@ -170,7 +175,12 @@
       }
     ],
     "fbx_bytes": 6767132,
-    "changes": "Selected geometry, applied modifiers, normalized scale/origin, rebuilt portable PBR materials. Scene backgrounds and reference images omitted."
+    "changes": "Selected geometry, applied modifiers, normalized scale/origin, rebuilt portable PBR materials. Scene backgrounds and reference images omitted.",
+    "surface_dimensions_m": [
+      1.135798692703247,
+      1.0619738101959229,
+      1.1731997430324554
+    ]
   },
   {
     "attribution": "THEREALDUSTIN",
@@ -296,7 +306,12 @@
       }
     ],
     "fbx_bytes": 5141148,
-    "changes": "Selected geometry, applied modifiers, normalized scale/origin, rebuilt portable PBR materials. Scene backgrounds and reference images omitted."
+    "changes": "Selected geometry, applied modifiers, normalized scale/origin, rebuilt portable PBR materials. Scene backgrounds and reference images omitted.",
+    "surface_dimensions_m": [
+      2.4000000953674316,
+      1.878485083580017,
+      1.675083875656128
+    ]
   },
   {
     "attribution": "Suraj99",
@@ -336,7 +351,12 @@
       }
     ],
     "fbx_bytes": 49084,
-    "changes": "Selected geometry, applied modifiers, normalized scale/origin, rebuilt portable PBR materials. Scene backgrounds and reference images omitted."
+    "changes": "Selected geometry, applied modifiers, normalized scale/origin, rebuilt portable PBR materials. Scene backgrounds and reference images omitted.",
+    "surface_dimensions_m": [
+      27.68760871887207,
+      16.562121391296387,
+      42.0
+    ]
   },
   {
     "attribution": "Suraj99",
@@ -376,7 +396,12 @@
       }
     ],
     "fbx_bytes": 36236,
-    "changes": "Selected geometry, applied modifiers, normalized scale/origin, rebuilt portable PBR materials. Scene backgrounds and reference images omitted."
+    "changes": "Selected geometry, applied modifiers, normalized scale/origin, rebuilt portable PBR materials. Scene backgrounds and reference images omitted.",
+    "surface_dimensions_m": [
+      9.590300559997559,
+      9.59032917022705,
+      35.0
+    ]
   },
   {
     "attribution": "Suraj99",
@@ -416,7 +441,12 @@
       }
     ],
     "fbx_bytes": 25452,
-    "changes": "Selected geometry, applied modifiers, normalized scale/origin, rebuilt portable PBR materials. Scene backgrounds and reference images omitted."
+    "changes": "Selected geometry, applied modifiers, normalized scale/origin, rebuilt portable PBR materials. Scene backgrounds and reference images omitted.",
+    "surface_dimensions_m": [
+      18.262361526489258,
+      18.262365341186523,
+      44.0
+    ]
   },
   {
     "attribution": "spacehead",
@@ -456,7 +486,12 @@
       }
     ],
     "fbx_bytes": 805020,
-    "changes": "Selected geometry, applied modifiers, normalized scale/origin, rebuilt portable PBR materials. Scene backgrounds and reference images omitted."
+    "changes": "Selected geometry, applied modifiers, normalized scale/origin, rebuilt portable PBR materials. Scene backgrounds and reference images omitted.",
+    "surface_dimensions_m": [
+      5.367925405502319,
+      3.456446409225464,
+      3.799999952316284
+    ]
   },
   {
     "attribution": "spacehead",
@@ -496,7 +531,12 @@
       }
     ],
     "fbx_bytes": 941836,
-    "changes": "Selected geometry, applied modifiers, normalized scale/origin, rebuilt portable PBR materials. Scene backgrounds and reference images omitted."
+    "changes": "Selected geometry, applied modifiers, normalized scale/origin, rebuilt portable PBR materials. Scene backgrounds and reference images omitted.",
+    "surface_dimensions_m": [
+      2.5524771213531494,
+      2.5443360805511475,
+      4.0
+    ]
   },
   {
     "attribution": "spacehead",
@@ -536,6 +576,11 @@
       }
     ],
     "fbx_bytes": 254444,
-    "changes": "Selected geometry, applied modifiers, normalized scale/origin, rebuilt portable PBR materials. Scene backgrounds and reference images omitted."
+    "changes": "Selected geometry, applied modifiers, normalized scale/origin, rebuilt portable PBR materials. Scene backgrounds and reference images omitted.",
+    "surface_dimensions_m": [
+      2.2000043392181396,
+      2.4320244789123535,
+      2.200000047683716
+    ]
   }
 ]

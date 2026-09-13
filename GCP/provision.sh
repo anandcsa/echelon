@@ -30,8 +30,22 @@ HOST=${2:-${IP}.sslip.io}
 TMP=$(mktemp -d)
 trap 'rm -rf "$TMP"' EXIT
 # Only the packaged game and built player are transferred; no Epic source or cloud credentials.
-tar -czf "$TMP/game.tar.gz" -C "$PACKAGE" .
+if command -v pigz >/dev/null 2>&1; then
+ tar --exclude='*/Saved' --exclude='*/Intermediate' --exclude='*/DerivedDataCache' -I 'pigz -1 -p 4' -cf "$TMP/game.tar.gz" -C "$PACKAGE" .
+else
+ tar --exclude='*/Saved' --exclude='*/Intermediate' --exclude='*/DerivedDataCache' -czf "$TMP/game.tar.gz" -C "$PACKAGE" .
+fi
 tar -czf "$TMP/player.tar.gz" -C "$ROOT/GCP/player/dist" .
+# Fresh VMs need time to boot and accept the IAP SSH key.
+SSH_READY=false
+for attempt in $(seq 1 30); do
+ if gcloud compute ssh "$VM" --tunnel-through-iap --project "$PROJECT" --zone "$ZONE" --quiet --ssh-flag='-o ConnectTimeout=10' --command=true; then
+  SSH_READY=true
+  break
+ fi
+ sleep 10
+done
+[[ "$SSH_READY" == true ]] || { echo 'VM created, but SSH is not ready; inspect before retrying.' >&2; exit 1; }
 gcloud compute scp --tunnel-through-iap --project "$PROJECT" --zone "$ZONE" "$TMP/game.tar.gz" "$TMP/player.tar.gz" "$ROOT/GCP/install-runtime.sh" "$VM:~/"
 gcloud compute ssh "$VM" --tunnel-through-iap --project "$PROJECT" --zone "$ZONE" --command="sudo bash ./install-runtime.sh '$HOST' '$IP'"
 printf 'After the driver reboot, verify https://%s and inspect journalctl -u echelon-game.\n' "$HOST"
