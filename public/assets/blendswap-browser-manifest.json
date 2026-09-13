@@ -1,0 +1,44 @@
+[
+  {
+    "name": "bs-interceptor",
+    "source_derivative": "bs_interceptor",
+    "triangles": 12670,
+    "bytes": 1539520,
+    "materials": 3
+  },
+  {
+    "name": "bs-interceptor-lod",
+    "source_derivative": "bs_interceptor",
+    "triangles": 2528,
+    "bytes": 270284,
+    "materials": 3
+  },
+  {
+    "name": "bs-sentry",
+    "source_derivative": "bs_drone_ball",
+    "triangles": 23999,
+    "bytes": 748260,
+    "materials": 6
+  },
+  {
+    "name": "bs-sentry-lod",
+    "source_derivative": "bs_drone_ball",
+    "triangles": 4774,
+    "bytes": 178128,
+    "materials": 6
+  },
+  {
+    "name": "bs-warden",
+    "source_derivative": "bs_burt_drone",
+    "triangles": 21999,
+    "bytes": 1642640,
+    "materials": 7
+  },
+  {
+    "name": "bs-warden-lod",
+    "source_derivative": "bs_burt_drone",
+    "triangles": 4399,
+    "bytes": 367376,
+    "materials": 7
+  }
+]

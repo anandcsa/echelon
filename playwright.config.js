@@ -1,0 +1,2 @@
+import {defineConfig} from '@playwright/test';
+export default defineConfig({testDir:'./tests',timeout:120000,expect:{timeout:15000},workers:1,webServer:{command:'PORT=5188 node server/main.mjs',url:'http://127.0.0.1:5188',reuseExistingServer:false},use:{channel:'chrome',baseURL:'http://127.0.0.1:5188',viewport:{width:960,height:600},launchOptions:{args:['--no-sandbox','--enable-unsafe-swiftshader']}}});

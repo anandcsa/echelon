@@ -1,0 +1,301 @@
+[
+  {
+    "attribution": "DennisH2010 (3DHaupt); vehicle concept by Piotr Kupsc",
+    "name": "bs_interceptor",
+    "source_id": 8745,
+    "source_url": "https://blendswap.com/blend/8745",
+    "author": {
+      "id": 4262,
+      "username": "3DHaupt",
+      "url": "https://blendswap.com/profile/4262"
+    },
+    "license": {
+      "key": "cc_by",
+      "name": "Creative Commons Attribution 3.0",
+      "url": "https://creativecommons.org/licenses/by/3.0/",
+      "license_source": "bundled_original_license"
+    },
+    "source_downloads": 562,
+    "triangles": 12670,
+    "dimensions_m": [
+      4.599999904632568,
+      2.4106669425964355,
+      1.4689306020736694
+    ],
+    "materials": [
+      {
+        "name": "bs_interceptor_m0",
+        "source_material": "Futuristic_Car",
+        "color": [
+          0.22,
+          0.28,
+          0.32,
+          1
+        ],
+        "metallic": 0.65,
+        "roughness": 0.34,
+        "color_map": "bs_interceptor_color.jpg",
+        "normal_map": "bs_interceptor_normal.jpg"
+      },
+      {
+        "name": "bs_interceptor_m1",
+        "source_material": "Futuristic_Car_black",
+        "color": [
+          0.025,
+          0.04,
+          0.055,
+          1
+        ],
+        "metallic": 0.4,
+        "roughness": 0.4
+      },
+      {
+        "name": "bs_interceptor_m2",
+        "source_material": "Futuristic_Car_glass",
+        "color": [
+          0.025,
+          0.08,
+          0.11,
+          1
+        ],
+        "metallic": 0.65,
+        "roughness": 0.08
+      }
+    ],
+    "fbx_bytes": 3909292,
+    "changes": "Selected geometry, applied modifiers, normalized scale/origin, rebuilt portable PBR materials. Scene backgrounds and reference images omitted."
+  },
+  {
+    "attribution": "CFilip",
+    "name": "bs_drone_ball",
+    "source_id": 21029,
+    "source_url": "https://blendswap.com/blend/21029",
+    "author": {
+      "id": 115847,
+      "username": "CFilip",
+      "url": "https://blendswap.com/profile/115847"
+    },
+    "license": {
+      "key": "cc_by",
+      "name": "Creative Commons Attribution 3.0",
+      "url": "https://creativecommons.org/licenses/by/3.0/",
+      "license_source": "bundled_original_license"
+    },
+    "source_downloads": 889,
+    "triangles": 269016,
+    "dimensions_m": [
+      1.135798692703247,
+      1.0619738101959229,
+      1.600000023841858
+    ],
+    "materials": [
+      {
+        "name": "bs_drone_ball_m0",
+        "source_material": "metal",
+        "color": [
+          0.38,
+          0.44,
+          0.49,
+          1
+        ],
+        "metallic": 0.85,
+        "roughness": 0.25
+      },
+      {
+        "name": "bs_drone_ball_m1",
+        "source_material": "GLASS",
+        "color": [
+          0.025,
+          0.08,
+          0.11,
+          1
+        ],
+        "metallic": 0.65,
+        "roughness": 0.08
+      },
+      {
+        "name": "bs_drone_ball_m2",
+        "source_material": "prox_kevlar",
+        "color": [
+          0.025,
+          0.04,
+          0.055,
+          1
+        ],
+        "metallic": 0.4,
+        "roughness": 0.4
+      },
+      {
+        "name": "bs_drone_ball_m3",
+        "source_material": "prox_easy_spec.007",
+        "color": [
+          0.22,
+          0.28,
+          0.32,
+          1
+        ],
+        "metallic": 0.65,
+        "roughness": 0.34
+      },
+      {
+        "name": "bs_drone_ball_m4",
+        "source_material": "prox_soap.006",
+        "color": [
+          0.63,
+          0.7,
+          0.71,
+          1
+        ],
+        "metallic": 0.35,
+        "roughness": 0.26
+      },
+      {
+        "name": "bs_drone_ball_m5",
+        "source_material": "prox_emission.007",
+        "color": [
+          0.04,
+          0.55,
+          0.8,
+          1
+        ],
+        "metallic": 0.65,
+        "roughness": 0.34,
+        "emission": [
+          0.04,
+          0.7,
+          1,
+          1
+        ],
+        "strength": 5
+      }
+    ],
+    "fbx_bytes": 6767132,
+    "changes": "Selected geometry, applied modifiers, normalized scale/origin, rebuilt portable PBR materials. Scene backgrounds and reference images omitted."
+  },
+  {
+    "attribution": "THEREALDUSTIN",
+    "name": "bs_burt_drone",
+    "source_id": 25188,
+    "source_url": "https://blendswap.com/blend/25188",
+    "author": {
+      "id": 192833,
+      "username": "THEREALDUSTIN",
+      "url": "https://blendswap.com/profile/192833"
+    },
+    "license": {
+      "key": "cc0",
+      "name": "CC0",
+      "url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_source": "uploader_declared"
+    },
+    "source_downloads": 942,
+    "triangles": 180216,
+    "dimensions_m": [
+      2.4000000953674316,
+      1.878485083580017,
+      1.675083875656128
+    ],
+    "materials": [
+      {
+        "name": "bs_burt_drone_m0",
+        "source_material": "Scratched Scuffed Aluminum",
+        "color": [
+          0.38,
+          0.44,
+          0.49,
+          1
+        ],
+        "metallic": 0.85,
+        "roughness": 0.25
+      },
+      {
+        "name": "bs_burt_drone_m1",
+        "source_material": "black rubber",
+        "color": [
+          0.025,
+          0.04,
+          0.055,
+          1
+        ],
+        "metallic": 0.4,
+        "roughness": 0.4
+      },
+      {
+        "name": "bs_burt_drone_m2",
+        "source_material": "Brown Red Plastic",
+        "color": [
+          0.22,
+          0.28,
+          0.32,
+          1
+        ],
+        "metallic": 0.65,
+        "roughness": 0.34
+      },
+      {
+        "name": "bs_burt_drone_m3",
+        "source_material": "Glow",
+        "color": [
+          0.04,
+          0.55,
+          0.8,
+          1
+        ],
+        "metallic": 0.65,
+        "roughness": 0.34,
+        "emission": [
+          0.04,
+          0.7,
+          1,
+          1
+        ],
+        "strength": 5
+      },
+      {
+        "name": "bs_burt_drone_m4",
+        "source_material": "GLOWING PAINTED",
+        "color": [
+          0.04,
+          0.55,
+          0.8,
+          1
+        ],
+        "metallic": 0.35,
+        "roughness": 0.26,
+        "emission": [
+          0.04,
+          0.7,
+          1,
+          1
+        ],
+        "strength": 5
+      },
+      {
+        "name": "bs_burt_drone_m5",
+        "source_material": "Lens",
+        "color": [
+          0.025,
+          0.08,
+          0.11,
+          1
+        ],
+        "metallic": 0.65,
+        "roughness": 0.08
+      },
+      {
+        "name": "bs_burt_drone_m6",
+        "source_material": "BUMPY DARK Paint on Metal",
+        "color": [
+          0.63,
+          0.7,
+          0.71,
+          1
+        ],
+        "metallic": 0.35,
+        "roughness": 0.26
+      }
+    ],
+    "fbx_bytes": 5141148,
+    "changes": "Selected geometry, applied modifiers, normalized scale/origin, rebuilt portable PBR materials. Scene backgrounds and reference images omitted."
+  }
+]

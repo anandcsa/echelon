@@ -1,0 +1,3 @@
+import {chromium} from '@playwright/test';
+const browser=await chromium.launch({channel:'chrome',args:['--no-sandbox','--enable-unsafe-swiftshader']});
+try{const page=await browser.newPage({viewport:{width:390,height:844},hasTouch:true,isMobile:true});page.setDefaultTimeout(90000);await page.goto('http://127.0.0.1:5189');await page.waitForFunction(()=>window.echelon?.getState().ready);await page.locator('#start').tap();await page.screenshot({path:'mobile-final-portrait.png'});console.log('RADAR',await page.locator('.radar').boundingBox());console.log('STATE',await page.evaluate(()=>({touch:window.echelon.getState().touchMode,quality:window.echelon.getState().quality})));}finally{await browser.close();}
