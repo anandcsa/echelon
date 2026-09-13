@@ -15,3 +15,6 @@ EchelonAssetPrep.uproject
 __pycache__/
 node_modules/
 player-touch-review.png
+
+Artifacts/
+GCP/player/dist/

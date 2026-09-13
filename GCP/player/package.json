@@ -1,0 +1,16 @@
+{
+  "name": "echelon-gcp-player",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite --host 127.0.0.1"
+  },
+  "dependencies": {
+    "@epicgames-ps/lib-pixelstreamingfrontend-ue5.6": "0.3.1"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.63.0",
+    "vite": "6.4.3"
+  }
+}

@@ -26,3 +26,27 @@ jobs:
       - run: npm ci
       - run: npx playwright install --with-deps chromium
       - run: npm test
+  gcp-player:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: EpicGames/PixelStreamingInfrastructure
+          ref: 771b83692a0bd464a6c3b80a0b207aafd7825162
+          path: epic-infrastructure
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: bash -n GCP/provision.sh GCP/install-runtime.sh
+      - run: python3 -m py_compile Build/build_linux.py
+      - run: npm ci --prefix GCP/player && npm run build --prefix GCP/player
+      - run: npx playwright install --with-deps chromium
+        working-directory: GCP/player
+      - run: |
+          npm ci --ignore-scripts --workspace Common --workspace Signalling --workspace SignallingWebServer --include-workspace-root
+          npm run build:cjs --workspace Common
+          npm run build:cjs --workspace Signalling
+          npm run build --workspace SignallingWebServer
+        working-directory: epic-infrastructure
+      - run: EPIC_INFRA_PATH="$GITHUB_WORKSPACE/epic-infrastructure" node GCP/player/test-signalling.mjs
