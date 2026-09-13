@@ -1,0 +1,11 @@
+node_modules
+dist
+*.blend*
+tests
+test-results
+scripts
+*.png
+
+public/assets/textures/*.jpg
+public/assets/aura-billboard.png
+reference/
