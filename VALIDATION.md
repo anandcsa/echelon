@@ -73,3 +73,6 @@ Limits: SwiftShader is software rendering, not a laptop GPU or phone benchmark. 
 - The car has approximately 12.7k/2.5k triangles and downloads at 1.54 MB/270 KB for near/far meshes. Sentry and Warden assets use reduced near/far geometry as recorded in `public/assets/blendswap-browser-manifest.json`.
 - The VM uses software rendering for browser checks. These results are functional/visual validation, not a claimed hardware frame rate or a physical-phone benchmark.
 - This is the Three.js browser edition. The Unreal engine build and GCP GPU streaming migration are separate work on the main branch.
+
+- Live release: `echelon-breakpoint-00010-8h5` serves 100% of Cloud Run traffic. Eleven production pages/bundles/model files match the local build byte-for-byte. Playwright verified Build 07 on the canonical URL, including car movement, brake, exit, advancing music and zero page errors.
+- Deployment now explicitly advances traffic to the revision returned by the build, fixing the previous service pin that kept successful deployments on an older revision.
