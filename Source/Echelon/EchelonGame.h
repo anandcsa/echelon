@@ -1,10 +1,10 @@
 #pragma once
 #include "CoreMinimal.h"
-#include "EchelonGame.generated.h"
 #include "GameFramework/GameModeBase.h"
 #include "GameFramework/HUD.h"
 #include "GameFramework/Pawn.h"
 #include "GameFramework/PlayerController.h"
+#include "EchelonGame.generated.h"
 
 class UCapsuleComponent;
 class UBoxComponent;

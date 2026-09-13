@@ -26,10 +26,7 @@ The user selected direct hosting in their Google Cloud account on September 13, 
 
 See [GCP/README.md](GCP/README.md) for the build, provisioning and validation steps. The intended first preview uses one Compute Engine `g2-standard-8` VM with an NVIDIA L4, Epic's UE 5.6 signalling server, the custom browser player and authenticated TURN. The existing Cloud Run service retains the browser game and Gemini/save backend.
 
-**Current blocker:** the authenticated GitHub account cannot read `EpicGames/UnrealEngine` (HTTP 404), and no Unreal Engine installation is present on this development VM. Link the GitHub account through Epic and accept the repository invitation:
-https://www.unrealengine.com/en-US/ue-on-github
-
-No GPU VM has been started, and there is no verified Unreal play URL yet. The native code, imported materials, packaging and GPU/WebRTC path still need to run on a licensed UE 5.6 toolchain. The previous StreamPixel configuration is historical; its queued build is not controlled by these scripts.
+Epic source access is active as of September 13, 2026. The UE 5.6.1 source is checked out locally; engine dependencies and the first native build are in progress. No GPU VM has been started, and there is no verified Unreal play URL yet. The previous StreamPixel configuration is historical; its queued build is not controlled by these scripts.
 
 ## Local Windows build
 

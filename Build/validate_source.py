@@ -10,6 +10,11 @@ assert project['Modules'][0]['Name']=='Echelon'
 for name in ['Echelon.Target.cs','EchelonEditor.Target.cs','Echelon/Echelon.Build.cs','Echelon/Echelon.cpp','Echelon/EchelonGame.h','Echelon/EchelonGame.cpp']:
     assert (root/'Source'/name).is_file(), name
 for file in (root/'Build').glob('*.py'): ast.parse(file.read_text())
+for header in (root/'Source').rglob('*.h'):
+    includes=[line for line in header.read_text().splitlines() if line.startswith('#include')]
+    generated=[line for line in includes if '.generated.h"' in line]
+    if generated:
+        assert includes[-1] == generated[0], f'Unreal requires generated header last: {header}'
 assets=json.loads((root/'SourceAssets/manifest.json').read_text())
 assert len(assets)==9
 for asset in assets:

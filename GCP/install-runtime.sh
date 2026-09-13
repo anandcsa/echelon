@@ -10,7 +10,7 @@ PUBLIC_IP=${2:?public IPv4 required}
 export DEBIAN_FRONTEND=noninteractive
 apt-get update
 apt-get install -y ca-certificates curl git xz-utils python3 caddy coturn \
- nvidia-driver-535-server libnvidia-encode-535-server libvulkan1 vulkan-tools \
+ nvidia-driver-570-server libnvidia-encode-570-server libvulkan1 vulkan-tools \
  libgbm1 libx11-6 libxcb1 libasound2
 # Node from the official distribution; verify its archive against official checksums.
 NODE_VERSION=22.22.0

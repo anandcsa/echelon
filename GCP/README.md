@@ -9,9 +9,9 @@ Hosting choice: user's Google Cloud account; Epic's upstream streaming stack. Th
 - `g2-standard-8`: 8 vCPUs, 32 GB RAM, one NVIDIA L4.
 - Regional L4 quota: 32, usage 0 at inspection. Quota does not guarantee physical capacity.
 - Separate `echelon-stream` VPC/VM names; existing workloads are not modified.
-- Epic engine repository: authenticated GitHub request returned HTTP 404. No local engine found.
+- Epic engine repository: invitation accepted; access active. UE 5.6.1 tag checked out locally at engine commit `6978b63c8951e57d97048d8424a0bebd637dde1d`.
 
-Connect Epic to GitHub account `anandcsa` and accept Epic's invitation:
+Epic source access setup (already completed for `anandcsa`):
 https://www.unrealengine.com/en-US/ue-on-github
 
 ## Build before provisioning
@@ -24,7 +24,7 @@ npm ci --prefix GCP/player
 npm run build --prefix GCP/player
 ```
 
-The Linux helper validates the engine version, runs the asset import commandlet, checks its fingerprint, builds the editor target and invokes Unreal Automation Tool to compile/cook/package the game. This sequence is **not yet exercised with Unreal**. Asset/source contracts and JavaScript checks cannot substitute for native compilation.
+The Linux helper validates the engine version, builds the editor and shader worker, runs the asset import commandlet, checks its fingerprint and invokes Unreal Automation Tool to compile/cook/package the game. This sequence is **not yet exercised with Unreal**. Asset/source contracts and JavaScript checks cannot substitute for native compilation.
 
 ## First GPU preview
 
@@ -36,7 +36,7 @@ After successful packaging, pass the directory containing `Echelon.sh`:
 
 The script refuses to allocate a VM without a game launcher/native binary directory and built player. It creates a dedicated network, IAP-only SSH ingress and one L4 VM, uploads only the packaged game/player, then installs the runtime. It does not copy Epic source, GitHub tokens or GCP service-account credentials.
 
-- Ubuntu 22.04, NVIDIA server driver with NVENC/Vulkan libraries.
+- Ubuntu 22.04, NVIDIA 570 server driver with NVENC/Vulkan libraries (UE 5.6.1 rejects older Linux drivers).
 - UE 5.6 Epic infrastructure pinned to `771b83692a0bd464a6c3b80a0b207aafd7825162`.
 - HTTPS via Caddy, authenticated preview access, coturn relay.
 - Streamer/signalling ports 8888/8080 are not open in the cloud firewall. Public ports are HTTPS/ACME, authenticated TURN and restricted-range WebRTC media.

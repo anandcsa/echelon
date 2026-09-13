@@ -12,18 +12,29 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--engine-root', required=True, type=Path, help='Directory containing Engine/')
     parser.add_argument('--output', type=Path, default=Path('Artifacts/Linux'))
+    parser.add_argument('--jobs', type=int, default=8, help='Maximum parallel C++ actions')
     args = parser.parse_args()
     root = Path(__file__).resolve().parents[1]
     engine = args.engine_root.resolve() / 'Engine'
     editor = engine / 'Binaries/Linux/UnrealEditor-Cmd'
     uat = engine / 'Build/BatchFiles/RunUAT.sh'
     build = engine / 'Build/BatchFiles/Linux/Build.sh'
-    for tool in (editor, uat, build):
+    for tool in (uat, build):
         if not tool.is_file():
             parser.error(f'Missing Unreal tool: {tool}. Install/build licensed Unreal Engine 5.6 first.')
     version = json.loads((engine / 'Build/Build.version').read_text())
     if (version['MajorVersion'], version['MinorVersion']) != (5, 6):
         parser.error('This project targets Unreal Engine 5.6.')
+    if not 1 <= args.jobs <= 64:
+        parser.error('--jobs must be between 1 and 64')
+    project = str(root / 'Echelon.uproject')
+    flags = ['-NoUBA', '-NoDebugInfo', f'-MaxParallelActions={args.jobs}']
+    # A source checkout has no editor executable yet. Build it before importing assets.
+    subprocess.run([str(build), 'EchelonEditor', 'Linux', 'Development',
+        f'-Project={project}', '-WaitMutex', '-buildubt', *flags], check=True)
+    subprocess.run([str(build), 'ShaderCompileWorker', 'Linux', 'Development', *flags], check=True)
+    if not editor.is_file():
+        parser.error(f'Editor build did not produce {editor}')
     digest = hashlib.sha256()
     inputs = sorted((root / 'SourceAssets').rglob('*')) + [root / 'Build/prepare_content.py', engine / 'Build/Build.version']
     for path in inputs:
@@ -46,11 +57,10 @@ def main():
             raise RuntimeError('Content import did not finish successfully; inspect AssetImport.log.')
     finally:
         prep.unlink(missing_ok=True)
-    project = str(root / 'Echelon.uproject')
-    subprocess.run([str(build), 'EchelonEditor', 'Linux', 'Development', f'-Project={project}', '-WaitMutex'], check=True)
     subprocess.run([str(uat), 'BuildCookRun', f'-project={project}', '-noP4', '-platform=Linux',
         '-clientconfig=Development', '-build', '-cook', '-stage', '-pak', '-package', '-archive',
-        f'-archivedirectory={args.output.resolve()}', '-unattended', '-utf8output'], check=True)
+        f'-archivedirectory={args.output.resolve()}', '-unattended', '-utf8output',
+        '-nodebuginfo', '-ubtargs=' + ' '.join(flags)], check=True)
     if not list(args.output.resolve().rglob('Echelon.sh')):
         raise RuntimeError('Packaging returned without an Echelon.sh launcher.')
     print(f'Linux package created at {args.output.resolve()}. GPU and browser validation still required.')
