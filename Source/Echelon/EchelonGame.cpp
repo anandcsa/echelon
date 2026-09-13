@@ -1,6 +1,7 @@
 #include "EchelonGame.h"
 #include "Camera/CameraComponent.h"
 #include "Components/BoxComponent.h"
+#include "Components/AudioComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/InputComponent.h"
 #include "Components/StaticMeshComponent.h"
@@ -134,14 +135,16 @@ AEchelonCar::AEchelonCar()
     PrimaryActorTick.bCanEverTick = true;
     Body = CreateDefaultSubobject<UBoxComponent>(TEXT("Chassis"));
     SetRootComponent(Body);
-    Body->SetBoxExtent(FVector(220, 95, 80));
+    Body->SetBoxExtent(FVector(230, 122, 80));
     Body->SetCollisionProfileName(TEXT("Pawn"));
     Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Sentinel"));
     Mesh->SetupAttachment(Body);
     Mesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
     Mesh->SetRelativeLocation(FVector(0, 0, -80));
+    // The source car faces -X; driving uses Unreal +X.
+    Mesh->SetRelativeRotation(FRotator(0, 180, 0));
     static ConstructorHelpers::FObjectFinder<UStaticMesh> CarAsset(
-        TEXT("/Game/Echelon/sentinel_sedan.sentinel_sedan"));
+        TEXT("/Game/Echelon/BlendSwap/bs_interceptor.bs_interceptor"));
     if (CarAsset.Succeeded())
         Mesh->SetStaticMesh(CarAsset.Object);
     Arm = CreateDefaultSubobject<USpringArmComponent>(TEXT("ChaseArm"));
@@ -296,12 +299,27 @@ void AEchelonGameMode::StartPlay()
         ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
     Car = GetWorld()->SpawnActor<AEchelonCar>(FVector(6200, 0, 80), FRotator::ZeroRotator, Params);
     Mara = GetWorld()->SpawnActor<AEchelonMara>(FVector(4900, -800, 95), FRotator::ZeroRotator, Params);
+    UGameplayStatics::GetAllActorsWithTag(this, TEXT("EchelonPatrol"), PatrolDrones);
+    for (AActor *Drone : PatrolDrones)
+        PatrolHomes.Add(Drone->GetActorLocation());
     if (auto *PC = UGameplayStatics::GetPlayerController(this, 0))
         StreamInput = PC->FindComponentByClass<UPixelStreamingInput>();
 }
 void AEchelonGameMode::Tick(float Dt)
 {
     Super::Tick(Dt);
+    // Slow surveillance orbits stay above their assigned clear street corridors.
+    const float Time = GetWorld()->GetTimeSeconds();
+    for (int32 I = 0; I < PatrolDrones.Num(); ++I)
+    {
+        if (!IsValid(PatrolDrones[I]))
+            continue;
+        const float Phase = Time * .18f + I * 1.7f;
+        const FVector Offset(FMath::Sin(Phase) * 350, FMath::Cos(Phase) * 240,
+                             FMath::Sin(Time * .8f + I) * 28);
+        PatrolDrones[I]->SetActorLocation(PatrolHomes[I] + Offset);
+        PatrolDrones[I]->SetActorRotation(FRotator(0, -FMath::RadiansToDegrees(Phase), 0));
+    }
     NextThink -= Dt;
     NextSave -= Dt;
     if (NextThink <= 0)
@@ -382,6 +400,18 @@ void AEchelonGameMode::OnBrowserMessage(const FString &Descriptor)
     }
     else if (Type == TEXT("echelon.interact"))
         Interact();
+    else if (Type == TEXT("echelon.music"))
+    {
+        bool Muted = false;
+        if (J->TryGetBoolField(TEXT("muted"), Muted))
+        {
+            TArray<AActor *> Sounds;
+            UGameplayStatics::GetAllActorsWithTag(this, TEXT("EchelonMusic"), Sounds);
+            for (AActor *Sound : Sounds)
+                if (auto *Audio = Sound->FindComponentByClass<UAudioComponent>())
+                    Audio->SetVolumeMultiplier(Muted ? 0.f : .12f);
+        }
+    }
     else if (Type == TEXT("echelon.input"))
     {
         double F = 0, R = 0;

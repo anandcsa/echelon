@@ -93,6 +93,97 @@ def material(name, rgb, rough=.65, metal=0, glow=0, texture=None, ground=False):
     u.EditorAssetLibrary.save_loaded_asset(m)
     return m
 
+def add_facade_windows(m):
+    """World-space facade glazing avoids thousands of extra window actors/draw calls."""
+    custom = material_api.create_material_expression(m, u.MaterialExpressionCustom)
+    custom.set_editor_property('description', 'Seeded Kairos facade windows')
+    custom.set_editor_property('output_type', u.CustomMaterialOutputType.CMOT_FLOAT4)
+    custom.set_editor_property('inputs', [u.CustomInput(input_name='P'), u.CustomInput(input_name='N')])
+    custom.set_editor_property('code', """
+float2 uv = float2(abs(N.x) > 0.5 ? P.y : P.x, P.z) / float2(280.0, 360.0);
+float2 cell = frac(uv);
+float frame = step(0.12,cell.x) * (1-step(0.88,cell.x)) * step(0.18,cell.y) * (1-step(0.78,cell.y));
+frame *= step(0.6,abs(N.x)+abs(N.y)) * step(300.0,P.z);
+float seed = frac(sin(dot(floor(uv),float2(12.9898,78.233))) * 43758.5453);
+float lit = frame * step(0.66,seed);
+float3 base = lerp(float3(0.18,0.23,0.27),float3(0.025,0.085,0.12),frame);
+return float4(base,lit);
+""")
+    pos = material_api.create_material_expression(m, u.MaterialExpressionWorldPosition)
+    normal = material_api.create_material_expression(m, u.MaterialExpressionPixelNormalWS)
+    material_api.connect_material_expressions(pos,'',custom,'P')
+    material_api.connect_material_expressions(normal,'',custom,'N')
+    mask = material_api.create_material_expression(m, u.MaterialExpressionComponentMask)
+    for channel in ['r','g','b']: mask.set_editor_property(channel,True)
+    mask.set_editor_property('a',False)
+    material_api.connect_material_expressions(custom,'',mask,'Input')
+    material_api.connect_material_property(mask,'',u.MaterialProperty.MP_BASE_COLOR)
+    alpha = material_api.create_material_expression(m, u.MaterialExpressionComponentMask)
+    for channel in ['r','g','b']: alpha.set_editor_property(channel,False)
+    alpha.set_editor_property('a',True)
+    material_api.connect_material_expressions(custom,'',alpha,'Input')
+    tint = material_api.create_material_expression(m, u.MaterialExpressionConstant3Vector)
+    tint.set_editor_property('constant',u.LinearColor(2.4,1.45,.65,1))
+    glow = material_api.create_material_expression(m,u.MaterialExpressionMultiply)
+    material_api.connect_material_expressions(alpha,'',glow,'A')
+    material_api.connect_material_expressions(tint,'',glow,'B')
+    material_api.connect_material_property(glow,'',u.MaterialProperty.MP_EMISSIVE_COLOR)
+
+# Explicit portable materials avoid importing unsupported legacy Blender shaders.
+blend_models = {}
+blend_manifest = json.loads((root / 'SourceAssets/BlendSwap/manifest.json').read_text())
+for entry in blend_manifest:
+    folder = '/Game/Echelon/BlendSwap'
+    opts = u.FbxImportUI()
+    opts.set_editor_property('automated_import_should_detect_type', False)
+    opts.set_editor_property('mesh_type_to_import', u.FBXImportType.FBXIT_STATIC_MESH)
+    opts.set_editor_property('import_as_skeletal', False)
+    opts.set_editor_property('import_materials', False)
+    opts.set_editor_property('import_textures', False)
+    opts.static_mesh_import_data.set_editor_property('combine_meshes', True)
+    opts.static_mesh_import_data.set_editor_property('auto_generate_collision', True)
+    opts.static_mesh_import_data.set_editor_property('normal_import_method', u.FBXNormalImportMethod.FBXNIM_IMPORT_NORMALS)
+    mesh = import_file(root / 'SourceAssets/BlendSwap' / (entry['name'] + '.fbx'), folder, entry['name'], opts)
+    mats = {}
+    for desc in entry['materials']:
+        m = material(desc['name'], desc['color'][:3], desc['roughness'], desc['metallic'])
+        if entry['name'].startswith('bs_tower_'): add_facade_windows(m)
+        if 'emission' in desc:
+            e = material_api.create_material_expression(m, u.MaterialExpressionConstant3Vector)
+            e.set_editor_property('constant', u.LinearColor(*(v * desc['strength'] for v in desc['emission'][:3]), 1))
+            material_api.connect_material_property(e, '', u.MaterialProperty.MP_EMISSIVE_COLOR)
+        for channel, prop in [('color', u.MaterialProperty.MP_BASE_COLOR), ('normal', u.MaterialProperty.MP_NORMAL)]:
+            filename = desc.get(channel + '_map')
+            if not filename: continue
+            path = root / 'SourceAssets/BlendSwap' / filename
+            tex = import_file(path, folder + '/Textures', path.stem)
+            if channel == 'normal':
+                tex.set_editor_property('compression_settings', u.TextureCompressionSettings.TC_NORMALMAP)
+                tex.set_editor_property('srgb', False)
+                # Blender uses OpenGL normal maps; Unreal expects DirectX green orientation.
+                tex.set_editor_property('flip_green_channel', True)
+            u.EditorAssetLibrary.save_loaded_asset(tex)
+            sample = material_api.create_material_expression(m, u.MaterialExpressionTextureSample)
+            sample.set_editor_property('texture', tex)
+            if channel == 'normal': sample.set_editor_property('sampler_type', u.MaterialSamplerType.SAMPLERTYPE_NORMAL)
+            material_api.connect_material_property(sample, 'RGB', prop)
+        material_api.recompile_material(m)
+        u.EditorAssetLibrary.save_loaded_asset(m)
+        mats[desc['name']] = m
+    for index, slot in enumerate(mesh.get_editor_property('static_materials')):
+        name = str(slot.get_editor_property('imported_material_slot_name'))
+        if name not in mats:
+            raise RuntimeError(f'Unexpected material slot on {entry["name"]}: {name}')
+        mesh.set_material(index, mats[name])
+    # Catch incorrect FBX units before baking a city full of misplaced models.
+    extent = mesh.get_bounds().box_extent
+    actual = sorted([extent.x * .02, extent.y * .02, extent.z * .02])
+    expected = sorted(entry['dimensions_m'])
+    if any(abs(a-b) > max(.05, b * .03) for a,b in zip(actual, expected)):
+        raise RuntimeError(f'Incorrect imported scale for {entry["name"]}: {actual} versus {expected}')
+    u.EditorAssetLibrary.save_loaded_asset(mesh)
+    blend_models[entry['name']] = mesh
+
 road = material('M_Road', (.15,.18,.21), .4, .1, texture='asphalt_02', ground=True)
 pavement = material('M_Pavement', (.4,.46,.5), texture='concrete_pavement', ground=True)
 wall = material('M_Concrete', (.3,.4,.46), texture='concrete_wall_009')
@@ -151,15 +242,57 @@ for name,x,z in [('clinic_module',-43,36),('transit_module',43,-35)]:
     actor = actor_system.spawn_actor_from_class(u.StaticMeshActor,u.Vector(z*100,x*100,0))
     actor.static_mesh_component.set_static_mesh(u.load_asset('/Game/Echelon/'+name))
 
+def detail(name, x, z, height=0, yaw=0, scale=1, collision=True, label=None):
+    actor = actor_system.spawn_actor_from_class(u.StaticMeshActor, u.Vector(z*100,x*100,height*100))
+    actor.set_actor_label(label or name)
+    component = actor.static_mesh_component
+    component.set_static_mesh(blend_models[name])
+    component.set_collision_enabled(u.CollisionEnabled.QUERY_AND_PHYSICS if collision else u.CollisionEnabled.NO_COLLISION)
+    actor.set_actor_rotation(u.Rotator(0,yaw,0),False)
+    actor.set_actor_scale3d(u.Vector(scale,scale,scale))
+    return actor
+
+# Detailed skyline occupies spare lots; roads and the playable arrival area stay clear.
+for name,x,z in [('bs_tower_a',-98,200),('bs_tower_b',48,200),('bs_tower_c',98,325),
+                 ('bs_tower_b',-205,325),('bs_tower_c',205,200)]:
+    detail(name,x,z)
+    detail('bs_antenna',x,z,{'bs_tower_a':42,'bs_tower_b':35,'bs_tower_c':44}[name],collision=False)
+for x,z,yaw in [(-13,60,0),(13,25,180),(-164,194,90),(164,324,270)]:
+    detail('bs_relay',x,z,yaw=yaw)
+# An airlock and uplink give Mara's meeting point an identifiable landmark.
+detail('bs_airlock',-26,51,yaw=90)
+detail('bs_antenna',-26,51,4,collision=False)
+# Tagged mobile meshes are animated by the native game mode; no physics collisions in flight.
+for index,(name,x,z,height) in enumerate([('bs_drone_ball',-6,43,7),('bs_drone_ball',6,76,8),
+                                         ('bs_burt_drone',-149,200,11),('bs_burt_drone',149,340,12)]):
+    drone=detail(name,x,z,height,collision=False,label='Echelon patrol '+str(index+1))
+    drone.static_mesh_component.set_mobility(u.ComponentMobility.MOVABLE)
+    drone.set_editor_property('tags',[u.Name('EchelonPatrol')])
+
+music = import_file(root/'SourceAssets/Audio/floating_in_space.wav','/Game/Echelon/Audio','floating_in_space')
+music.set_editor_property('looping',True)
+u.EditorAssetLibrary.save_loaded_asset(music)
+ambient = actor_system.spawn_actor_from_class(u.AmbientSound,u.Vector(0,0,200))
+ambient.set_actor_label('Quiet Kairos soundtrack')
+ambient.set_editor_property('tags',[u.Name('EchelonMusic')])
+audio = ambient.get_component_by_class(u.AudioComponent)
+audio.set_sound(music)
+audio.set_editor_property('allow_spatialization',False)
+audio.set_editor_property('auto_activate',True)
+audio.set_volume_multiplier(.12)
+
 start = actor_system.spawn_actor_from_class(u.PlayerStart,u.Vector(6100,180,96))
 sun = actor_system.spawn_actor_from_class(u.DirectionalLight,u.Vector(0,0,6000))
 sun.set_actor_rotation(u.Rotator(-22,-35,0),False)
 light = sun.get_component_by_class(u.DirectionalLightComponent)
+light.set_mobility(u.ComponentMobility.MOVABLE)
 light.set_editor_property('atmosphere_sun_light',True)
 light.set_intensity(10000)
 actor_system.spawn_actor_from_class(u.SkyAtmosphere,u.Vector(0,0,0))
 sky = actor_system.spawn_actor_from_class(u.SkyLight,u.Vector(0,0,1000))
-sky.get_component_by_class(u.SkyLightComponent).set_editor_property('real_time_capture',True)
+sky_light=sky.get_component_by_class(u.SkyLightComponent)
+sky_light.set_mobility(u.ComponentMobility.MOVABLE)
+sky_light.set_editor_property('real_time_capture',True)
 fog = actor_system.spawn_actor_from_class(u.ExponentialHeightFog,u.Vector(0,0,0))
 fog.get_component_by_class(u.ExponentialHeightFogComponent).set_editor_property('fog_density',.008)
 if not u.EditorLoadingAndSavingUtils.save_map(world,'/Game/Maps/Kairos'):

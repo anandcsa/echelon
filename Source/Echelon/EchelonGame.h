@@ -115,6 +115,8 @@ class ECHELON_API AEchelonGameMode : public AGameModeBase
     UPROPERTY() UPixelStreamingInput *StreamInput;
     FString Session;
     TArray<FString> Memory;
+    UPROPERTY() TArray<AActor *> PatrolDrones;
+    TArray<FVector> PatrolHomes;
     float NextThink = 15, NextSave = 25;
     void SendBrowser(const FString &Kind, const FString &Text);
 };

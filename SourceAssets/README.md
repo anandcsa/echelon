@@ -7,3 +7,5 @@ The Sentinel derives from Car Concept: Eric Chadwick / Darmstadt Graphics Group 
 The other included game-authored models were produced in the project's Blender build scripts. Full game third-party credits are included for reference; not all listed textures/music are in this kit.
 
 Characters retain their articulated object hierarchy. They do **not** contain a skinned armature or Unreal animation blueprint, and are not the realistic paid/free characters on the asset shortlist. A proper skeletal rig, retargeting and better skins remain part of the character upgrade. This kit is assets and canon data, not a compiled Unreal game.
+
+The `BlendSwap/` directory adds nine licensed static derivatives (car, two drones, three towers, airlock, antenna, relay), with source attribution and Blender review renders. `Audio/` contains the existing quiet soundtrack decoded for Unreal. Native import and rendering must be validated separately from Blender export.

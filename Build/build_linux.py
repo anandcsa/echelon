@@ -29,10 +29,15 @@ def main():
         parser.error('--jobs must be between 1 and 64')
     project = str(root / 'Echelon.uproject')
     flags = ['-NoUBA', '-NoDebugInfo', f'-MaxParallelActions={args.jobs}']
+    if not (engine / 'Build/InstalledBuild.txt').exists():
+        # UE's BuildUBT helper also publishes the DLL to the path Build.sh executes.
+        subprocess.run([str(engine / 'Build/BatchFiles/BuildUBT.sh')], check=True)
     # A source checkout has no editor executable yet. Build it before importing assets.
     subprocess.run([str(build), 'EchelonEditor', 'Linux', 'Development',
-        f'-Project={project}', '-WaitMutex', '-buildubt', *flags], check=True)
+        f'-Project={project}', '-WaitMutex', *flags], check=True)
     subprocess.run([str(build), 'ShaderCompileWorker', 'Linux', 'Development', *flags], check=True)
+    if not editor.is_file():
+        editor = engine / 'Binaries/Linux/UnrealEditor'
     if not editor.is_file():
         parser.error(f'Editor build did not produce {editor}')
     digest = hashlib.sha256()
