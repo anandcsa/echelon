@@ -91,11 +91,13 @@ peer = {'iceServers': [{'urls': ['stun:stun.l.google.com:19302']},
 config = {'streamer_port': 8888, 'player_port': 8080, 'sfu_port': 8889,
     'max_players': 1, 'serve': True, 'http_root': '/opt/echelon/player', 'homepage': 'index.html',
     'https': False, 'https_redirect': False, 'rest_api': False, 'log_config': False,
-    'peer_options': json.dumps(peer)}
+    'peer_options_file': '/opt/echelon/infrastructure/SignallingWebServer/peer-options.json'}
 p = Path('/opt/echelon/infrastructure/SignallingWebServer/config.json')
 p.write_text(json.dumps(config, indent=2)); p.chmod(0o600)
+peer_path = p.with_name('peer-options.json')
+peer_path.write_text(json.dumps(peer, indent=2)); peer_path.chmod(0o600)
 PY
-chown echelon:echelon /opt/echelon/infrastructure/SignallingWebServer/config.json
+chown echelon:echelon /opt/echelon/infrastructure/SignallingWebServer/config.json /opt/echelon/infrastructure/SignallingWebServer/peer-options.json
 chown root:turnserver /etc/turnserver.conf
 chmod 640 /etc/turnserver.conf
 cat > /etc/systemd/system/echelon-signalling.service <<'UNIT'

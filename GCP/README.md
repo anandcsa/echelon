@@ -26,6 +26,8 @@ npm run build --prefix GCP/player
 
 The Linux helper validates the engine version, builds the editor and shader worker, runs the asset import commandlet, checks its fingerprint and invokes Unreal Automation Tool to compile/cook/package the game. Editor compilation, asset import and editor game-mode startup have passed; standalone cooking/packaging remains pending. Asset/source contracts and JavaScript checks cannot substitute for native compilation.
 
+The live desktop and touch-layout stream now passes video/audio checks at 1080p. Forced TURN relay still times out; see `VALIDATION.md` for limitations.
+
 ## First GPU preview
 
 For an early native preview, the already compiled Unreal editor can run the game in `-game` mode. This is actual Unreal rendering, but is a larger deployment than a cooked game:
