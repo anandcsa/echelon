@@ -1,3 +1,15 @@
+# Neon City / Build 08 — September 14, 2026
+
+- Production build and 22 Node unit/API tests passed.
+- Selected Playwright regression suite: 20 passed on the first run. The mobile HUD test exhausted its original 120-second deadline at the final post-reload position check. It passed independently in 2.6 minutes with a targeted 180-second deadline, including an assertion that mobile starts in balanced mode. All 21 selected scenarios are now covered successfully; this is not a claim that the initial suite was entirely green.
+- Coverage: mission signal and choices, upgrades, rooftop recovery and navigation, NPC evidence/memory/autonomy, desktop/remote controls, combat and EMP, relay saves/extraction, audio controls, touch HUD persistence, driving/braking/exiting, map navigation and all three side-story branches.
+- Inspected actual high and balanced browser screenshots. New city placement count: 83 buildings. Validated 31 self-contained GLB exports, about 13.3 MB total, plus the generated billboard and primary asset manifest.
+- All 33 new files matched deployed preview bytes. Live preview test passed real car movement, braking, exit, music playback, expected Build 08 identity and zero browser errors. Revision: `echelon-breakpoint-00015-moy`.
+- The automated VM uses software rendering. The balanced live sample reported about 546k triangles and 199 draw calls; high adds reflection/shadow passes. No hardware GPU frame-rate or physical-phone performance claim is made. Software rendering remains slow.
+- Editable Blender source and generation prompts are documented in `NEON-CITY.md`. The reference board is concept art; `neon-street.png`, `neon-driving.png`, `neon-high-final.png` and `neon-live-driving.png` are browser captures.
+
+---
+
 # Build 02 validation
 
 - Production Vite build succeeded.
