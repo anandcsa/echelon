@@ -1,0 +1,15 @@
+# Neon City — Build 08
+
+The Three.js edition now uses original Blender-authored architecture, vehicles, robots and props, guided by a generated environment reference. The four tower templates have stepped masses, broad concrete piers, recessed shop glazing, awnings, copper services, ventilation, rooftop plant and planted terraces. The same kit fills the expanded driving districts. Original gameplay, story state, car controls and named NPC behavior remain connected.
+
+Source: `scripts/build_neon_city.py`, `scripts/build_neon_details.py`, `scripts/build_neon_lods.py`. Editable geometry: `echelon-neon-city.blend` (local, excluded from Git and deployment). Runtime exports: `public/assets/neon/`. The `manifest.json` inventories the primary models; additional cast/interior and LOD exports accompany them. Distant towers switch to simplified geometry at 105m on high and 65m on balanced. Repeated meshes use instancing with distance culling.
+
+The original reference board is saved at `reference/neon-rebuild/city-reference.png` (local). Both it and the Civic Union billboard were generated using the built-in imagegen tool. The billboard is resized/compressed to `public/assets/neon/civic-billboard.webp` for runtime use. Neither image is evidence of real-time rendering; the `neon-*.png` browser captures are.
+
+Concept prompt: Original detailed reference board for Echelon: Breakpoint, realistic cyberpunk open-world driving and first-person browser game. Broad drivable boulevard plus modular building, coupe, drone and kiosk panels. Dense dystopian sci-fi megacity, late-afternoon haze and warm sunlight, readable pavement and buildings, layered concrete megablocks, inset blue glass, structural ribs, exposed services, skybridges, elevated transit, detailed storefronts, selective cyan and vermilion neon, rooftop equipment, planters and road markings. Strong stepped silhouettes and chamfered corners. Pearl-white/graphite rounded coupe with continuous light strip and curved canopy. Ceramic surveillance drone. Original designs; no existing game logos, characters, UI or watermark.
+
+Billboard prompt: Original vertical civic propaganda advertisement. Adult woman with short silver hair and subtle chrome temple implants; terracotta-orange, ivory and deep teal. Elegant architectural grid and graphic arc. Large typography “YOUR MEMORIES.” and “YOUR FUTURE.”; bottom wordmark “CIVIC UNION”. Flat straight-on artwork, no frame, environment or existing game branding.
+
+Fab environment listings were visual inspiration only. No Soul: City, Fab package or Cyberpunk 2077 game files were imported. CC0 material textures and quiet music retain their existing credits. Earlier asset files remain archived in the repository but the game’s model loaders now point at the new edition.
+
+This is a browser-game visual rebuild, not equivalent to Cyberpunk 2077 production quality. The cast remains original procedurally modeled articulated characters, not scanned humans. High quality uses PBR, shadows, bloom and a planar road reflection; balanced reduces shading cost. Browser checks on this VM use software rendering and do not establish hardware frame-rate targets.

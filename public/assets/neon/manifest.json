@@ -1,0 +1,87 @@
+{
+  "edition": "neon-city-2026-09",
+  "author": "Original Echelon procedural Blender models",
+  "reference": "reference/neon-rebuild/city-reference.png",
+  "assets": [
+    {
+      "name": "tower-0",
+      "triangles": 26764,
+      "bytes": 1342068
+    },
+    {
+      "name": "tower-1",
+      "triangles": 29344,
+      "bytes": 1512616
+    },
+    {
+      "name": "tower-2",
+      "triangles": 31228,
+      "bytes": 1638064
+    },
+    {
+      "name": "tower-3",
+      "triangles": 33952,
+      "bytes": 1805288
+    },
+    {
+      "name": "recon-drone",
+      "triangles": 5440,
+      "bytes": 152700
+    },
+    {
+      "name": "warden-drone",
+      "triangles": 5440,
+      "bytes": 152700
+    },
+    {
+      "name": "sentinel-sedan",
+      "triangles": 10256,
+      "bytes": 366020
+    },
+    {
+      "name": "utility-box",
+      "triangles": 1576,
+      "bytes": 74840
+    },
+    {
+      "name": "vending-machine",
+      "triangles": 1576,
+      "bytes": 76076
+    },
+    {
+      "name": "mission-console",
+      "triangles": 1576,
+      "bytes": 75384
+    },
+    {
+      "name": "road-barrier",
+      "triangles": 540,
+      "bytes": 27532
+    },
+    {
+      "name": "planter",
+      "triangles": 1240,
+      "bytes": 42912
+    },
+    {
+      "name": "bench",
+      "triangles": 432,
+      "bytes": 21636
+    },
+    {
+      "name": "shelter",
+      "triangles": 864,
+      "bytes": 48152
+    },
+    {
+      "name": "pulse-carbine",
+      "triangles": 1228,
+      "bytes": 54340
+    },
+    {
+      "name": "echelon-core",
+      "triangles": 5208,
+      "bytes": 134844
+    }
+  ]
+}
